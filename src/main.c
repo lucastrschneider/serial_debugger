@@ -4,23 +4,28 @@
  * @brief Main function
  */
 
-#include "mcu.h"
+#include "mcu_adapter.h"
+#include "button_adapter.h"
+#include "leds_adapter.h"
 
 /*****************************************
  * Private Constant Definitions
  *****************************************/
 
-#define LED_TOGGLE_DELAY_MS 1500
+#define LOOP_RATE_MS 100
 
 /*****************************************
  * Main Function
  *****************************************/
 
 int main(void) {
-    mcu_init();
+    mcu_adapter_init();
+    button_adapter_init();
+    leds_adapter_init();
 
     for (;;) {
-        led_toggle();
-        mcu_sleep(LED_TOGGLE_DELAY_MS);
+        if (button_adapter_is_pressed()) {
+            leds_adapter_control(LED_NUCLEO, LED_ADAPTER_ACTION_TOGGLE);
+        }
     }
 }
