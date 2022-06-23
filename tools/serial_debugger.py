@@ -7,7 +7,7 @@ import time
 DEFAULT_SERIAL_PORT = "/dev/ttyACM0"
 DEFAULT_BAUDRATE = 115200
 
-if __name__ == "__main__":
+def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--port-name",
                         help="Serial port", type=str,
@@ -18,20 +18,28 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    port_name = args.port_name
-    baudrate = args.baudrate
+    return args.port_name, args.baudrate
+
+def main():
+    port_name, baudrate = parse_arguments()
 
     try:
         with serial.Serial(port_name, baudrate) as serial_port:
             # Precisa do delay e do flush input para limpar de verdade
-            time.sleep(0.5)
-            serial_port.flushInput()
-            serial_port.flushOutput()
+            time.sleep(0.1)
+            serial_port.reset_input_buffer()
+            serial_port.reset_output_buffer()
 
             while True:
                 payload = serial_port.read_all()
                 if (len(payload) > 0):
-                    # print(len(payload))
-                    print(payload)
+                    print(payload.decode("ascii"), end="")
+    except OSError:
+        print("Dispositivo desconectado")
     except serial.serialutil.SerialException:
-        print(f"Erro no serial! {port_name} {baudrate}")
+        print(f"Erro na porta serial: {port_name} {baudrate}")
+    except KeyboardInterrupt:
+        pass
+
+if __name__ == "__main__":
+    main()
