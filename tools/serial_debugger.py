@@ -9,7 +9,7 @@ DEFAULT_BAUDRATE = 115200
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--port-name",
+    parser.add_argument("-p", "--port-name",
                         help="Serial port", type=str,
                         default=DEFAULT_SERIAL_PORT)
     parser.add_argument("-b", "--baudrate",
