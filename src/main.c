@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #include "mcu_adapter.h"
 #include "button_adapter.h"
@@ -49,8 +50,8 @@ int main(void) {
                 reset_timer_ms(sending_timer);
                 leds_adapter_control(LED_NUCLEO, LED_ADAPTER_ACTION_TOGGLE);
 
-                sprintf((char*) str, "Msg: %04d\r\n", counter);
-                HAL_UART_Transmit(&huart2, str, 11, 50);
+                sprintf((char*) str, "Msg: %03d\r\n", counter);
+                HAL_UART_Transmit(&huart2, str, strlen((char*) str), 50);
 
                 counter++;
             }
