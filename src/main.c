@@ -17,7 +17,7 @@
  * Private Constant Definitions
  *****************************************/
 
-#define SENDING_RATE_MS 200
+#define SENDING_RATE_MS 100
 
 /*****************************************
  * Private Variables
